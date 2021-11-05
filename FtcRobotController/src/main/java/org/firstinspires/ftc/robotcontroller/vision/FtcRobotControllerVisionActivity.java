@@ -22,8 +22,12 @@ public class FtcRobotControllerVisionActivity extends FtcRobotControllerActivity
     private static final String TAG = "RCActivity:Vision";
     private static boolean killOpenCV = false;
     private static boolean openCVKilled = false;
+
+    public static int markerPosition;
+
     JavaCameraView javaCameraView;
     Mat mRgba;
+
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -60,8 +64,13 @@ public class FtcRobotControllerVisionActivity extends FtcRobotControllerActivity
     @Override //run the vision pipeline for the frames
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         mRgba = inputFrame.rgba();
-        Vision.markerDetection(mRgba.getNativeObjAddr());
+        markerPosition = Vision.markerDetection(mRgba.getNativeObjAddr());
+        Log.d("OpenCV Marker", String.valueOf(markerPosition));
         return mRgba;
+    }
+
+    public static int getMarkerPosition(){
+        return markerPosition;
     }
 
     @Override
@@ -83,12 +92,9 @@ public class FtcRobotControllerVisionActivity extends FtcRobotControllerActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Log.d(TAG, "Thing is null: " + (findViewById(R.id.java_camera_view) == null));
         javaCameraView = (JavaCameraView) findViewById(R.id.java_camera_view);
-
         javaCameraView.setCameraPermissionGranted();
-
         javaCameraView.setVisibility(View.VISIBLE);
         javaCameraView.setCvCameraViewListener(this);
         killOpenCV = false;

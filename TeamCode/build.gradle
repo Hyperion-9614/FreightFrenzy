@@ -16,6 +16,10 @@ apply from: '../build.common.gradle'
 apply from: '../build.dependencies.gradle'
 
 android {
+
+    androidResources {
+        noCompress 'tflite'
+    }
     externalNativeBuild {
         cmake {
             path file('CMakeLists.txt')
