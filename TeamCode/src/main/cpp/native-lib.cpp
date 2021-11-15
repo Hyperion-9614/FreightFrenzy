@@ -13,7 +13,6 @@ using namespace std;
 extern "C"
 JNIEXPORT int JNICALL
 Java_org_firstinspires_ftc_robotcontroller_vision_Vision_markerDetection(JNIEnv *env, jclass type, jlong addr_rgba) {
-    // TODO: implement markerDetection()
     Mat &img = *(Mat *) addr_rgba;
     Mat hsv;
     GaussianBlur(img, hsv, Size(5, 5), BORDER_DEFAULT);
