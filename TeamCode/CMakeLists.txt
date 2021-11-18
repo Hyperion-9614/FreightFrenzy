@@ -1,51 +1,35 @@
-# For more information about using CMake with Android Studio, read the
-# documentation: https://d.android.com/studio/projects/add-native-code.html
-
-# Sets the minimum version of CMake required to build the native library.
-
-cmake_minimum_required(VERSION 3.10.0+)
-
+# Sets the minimum version of CMake required to build your native library.
+# This ensures that a certain set of CMake features is available to
+# your build.
 project(FreightFrenzy)
 
-set(CMAKE_VERBOSE_MAKEFILE on)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++17")
+cmake_minimum_required(VERSION 3.19.0)
 
-include_directories(${CMAKE_SOURCE_DIR}/src/main/jniIncludes)
+# Specifies a library name, specifies whether the library is STATIC or
+# SHARED, and provides relative paths to the source code. You can
+# define multiple libraries by adding multiple add_library() commands,
+# and CMake builds them for you. When you build your app, Gradle
+# automatically packages shared libraries with your APK.
 
-# Creates and names a library, sets it as either STATIC
-# or SHARED, and provides the relative paths to its source code.
-# You can define multiple libraries, and CMake builds them for you.
-# Gradle automatically packages shared libraries with your APK.
+add_library( # Specifies the name of the library.
+             TeamCode
 
-add_library( # Sets the name of the library.
-        native-lib
+             # Sets the library as a shared library.
+             SHARED
 
-        # Sets the library as a shared library.
-        SHARED
+             # Provides a relative path to your source file(s).
+             src/main/cpp/native_pipeline.cpp)
 
-        # Provides a relative path to your source file(s).
-        src/main/cpp/native-lib.cpp)
+# Specifies a path to native header files.
+include_directories(src/main/cpp/include/
+                    ${CMAKE_CURRENT_SOURCE_DIR}/src/main/jniIncludes/)
 
-add_library(lib_opencv SHARED IMPORTED)
+# Specify path to prebuilt object
+add_library(openCvNative SHARED IMPORTED)
+set_target_properties(openCvNative PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/main/jniLibraries/${ANDROID_ABI}/libopencv_java4.so)
 
-set_target_properties(lib_opencv PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libopencv_java4.so)
-
-# Searches for a specified prebuilt library and stores the path as a
-# variable. Because CMake includes system libraries in the search path by
-# default, you only need to specify the name of the public NDK library
-# you want to add. CMake verifies that the library exists before
-# completing its build.
-
-find_library( # Sets the name of the path variable.
-        log-lib
-
-        # Specifies the name of the NDK library that
-        # you want CMake to locate.
-        log)
-
-# Specifies libraries CMake should link to your target library. You
-# can link multiple libraries, such as libraries you define in this
-# build script, prebuilt third-party libraries, or system libraries.
-
-
-target_link_libraries(native-lib ${log-lib} lib_opencv)
+# linking libs
+target_link_libraries(
+        TeamCode
+        openCvNative)

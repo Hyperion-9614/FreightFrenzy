@@ -2,9 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.qualcomm.ftcrobotcontroller"
     android:versionCode="42"
-    android:versionName="7.0">
+    android:versionName="@string/version_name_for_manifest">
 
-  <uses-permission android:name="android.permission.CAMERA"/>
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
   <application
@@ -26,7 +25,8 @@
               android:screenOrientation="fullUser"
               android:configChanges="orientation|screenSize"
               android:label="@string/app_name"
-              android:launchMode="singleTask" >
+              android:launchMode="singleTask"
+              android:theme="@style/SplashTheme">
 
       <intent-filter>
         <category android:name="android.intent.category.LAUNCHER" />
@@ -36,7 +36,7 @@
     </activity>
 
     <activity
-      android:name="org.firstinspires.ftc.robotcontroller.vision.FtcRobotControllerVisionActivity"
+      android:name="org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity"
       android:screenOrientation="fullUser"
       android:configChanges="orientation|screenSize"
       android:label="@string/app_name"
