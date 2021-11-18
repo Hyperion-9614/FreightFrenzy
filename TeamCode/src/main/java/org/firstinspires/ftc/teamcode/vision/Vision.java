@@ -23,18 +23,16 @@ public class Vision extends LinearOpMode
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
 
         phoneCam.setPipeline(new NativePipeline());
-
+        phoneCam.setViewportRenderer(OpenCvCamera.ViewportRenderer.GPU_ACCELERATED);
         phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
-            public void onOpened()
-            {
-                phoneCam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
+            public void onOpened() {
+                phoneCam.startStreaming(1280, 960, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
-            public void onError(int errorCode)
-            {
+            public void onError(int errorCode) {
 
             }
         });
