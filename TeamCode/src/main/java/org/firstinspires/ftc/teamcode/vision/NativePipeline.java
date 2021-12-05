@@ -5,10 +5,17 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 public class NativePipeline extends OpenCvPipeline
 {
+
+    private static int position;
+
+    public static int getPosition(){
+        return position;
+    }
+
     @Override
     public Mat processFrame(Mat input)
     {
-        nativeProcessFrame(input.nativeObj);
+        position = nativeProcessFrame(input.nativeObj);
         return input;
     }
 
