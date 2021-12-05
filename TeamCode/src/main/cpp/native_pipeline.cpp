@@ -13,17 +13,17 @@ extern "C"
 JNIEXPORT jint JNICALL
 Java_org_firstinspires_ftc_teamcode_vision_NativePipeline_nativeProcessFrame(JNIEnv *env, jobject thiz, jlong frame_ptr) {
     Mat &img = *(Mat *) frame_ptr;
+    Mat bgr;
     Mat hsv;
-    GaussianBlur(img, hsv, Size(5, 5), BORDER_DEFAULT);
-    cvtColor(hsv, hsv, COLOR_BGR2HSV);
+    cvtColor(img, bgr, COLOR_RGB2BGR);
+    cvtColor(bgr, hsv, COLOR_BGR2HSV);
+    GaussianBlur(bgr, hsv, Size(5, 5), BORDER_DEFAULT);
     Mat masked;
-    Scalar lower = Scalar(27, 26, 189);
-    Scalar upper = Scalar(40, 255, 255);
+    Scalar lower = Scalar(9, 140, 48);
+    Scalar upper = Scalar(150, 255, 255);
     inRange(hsv, lower, upper, masked);
-    bitwise_and(hsv, hsv, masked);
-    cvtColor(hsv, hsv, COLOR_BGR2GRAY);
     Mat thresh_img;
-    threshold(hsv, thresh_img, 100, 255, THRESH_BINARY + THRESH_OTSU);
+    threshold(masked, thresh_img, 128, 255, THRESH_BINARY | THRESH_OTSU);
     vector<vector<Point>> contour;
     vector<Vec4i> hierarchy;
     findContours(thresh_img, contour, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_NONE);
@@ -41,6 +41,8 @@ Java_org_firstinspires_ftc_teamcode_vision_NativePipeline_nativeProcessFrame(JNI
         contour.erase(contour.begin(), contour.begin() + index - 1);
         contour.erase(contour.begin() + 1, contour.end());
     }
+    drawContours(img, contour, -1, Scalar(0, 255, 0), 1);
+
     int x = boundingRect(contour[0]).x;
     int y = boundingRect(contour[0]).y;
     int width = boundingRect(contour[0]).width;
