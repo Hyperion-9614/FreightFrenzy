@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.vision.CameraDaemon;
+import org.firstinspires.ftc.teamcode.vision.Pipeline;
 import org.openftc.easyopencv.OpenCvCamera;
 
 @TeleOp
@@ -17,7 +18,7 @@ public class VisionTest extends LinearOpMode
     public void runOpMode()
     {
 
-        OpenCvCamera camera = CameraDaemon.initPhoneCamera(hardwareMap, true);
+        OpenCvCamera camera = CameraDaemon.initWebcam(hardwareMap, true, new Pipeline());
         CameraDaemon.streamCamera(camera, 1280, 960);
 
         telemetry.addLine("Waiting for start");
@@ -32,6 +33,7 @@ public class VisionTest extends LinearOpMode
             telemetry.addData("Pipeline time ms", camera.getPipelineTimeMs());
             telemetry.addData("Overhead time ms", camera.getOverheadTimeMs());
             telemetry.addData("Theoretical max FPS", camera.getCurrentPipelineMaxFps());
+            telemetry.addData("Duck Position", Pipeline.getPosition());
             telemetry.update();
         }
     }

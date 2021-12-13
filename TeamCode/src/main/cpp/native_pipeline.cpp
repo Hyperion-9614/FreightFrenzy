@@ -19,8 +19,8 @@ Java_org_firstinspires_ftc_teamcode_vision_NativePipeline_nativeProcessFrame(JNI
     cvtColor(bgr, hsv, COLOR_BGR2HSV);
     GaussianBlur(bgr, hsv, Size(5, 5), BORDER_DEFAULT);
     Mat masked;
-    Scalar lower = Scalar(9, 140, 48);
-    Scalar upper = Scalar(150, 255, 255);
+    Scalar lower = Scalar(16, 4, 159);
+    Scalar upper = Scalar(38, 175, 255);
     inRange(hsv, lower, upper, masked);
     Mat thresh_img;
     threshold(masked, thresh_img, 128, 255, THRESH_BINARY | THRESH_OTSU);

@@ -7,25 +7,26 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 public class CameraDaemon {
 
-    public static OpenCvCamera initWebcam(HardwareMap hardwareMap, boolean livePreview){
+    public static OpenCvCamera initWebcam(HardwareMap hardwareMap, boolean livePreview, OpenCvPipeline pipeline){
         OpenCvCamera webcam;
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        WebcamName webcamName = hardwareMap.get(WebcamName.class, "webcam");
+        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam");
         if (livePreview){
             webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
         }
         else{
             webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName);
         }
-        webcam.setPipeline(new NativePipeline());
+        webcam.setPipeline(pipeline);
         webcam.setViewportRenderer(OpenCvCamera.ViewportRenderer.GPU_ACCELERATED);
         return webcam;
     }
 
-    public static OpenCvCamera initPhoneCamera(HardwareMap hardwareMap, boolean livePreview){
+    public static OpenCvCamera initPhoneCamera(HardwareMap hardwareMap, boolean livePreview, OpenCvPipeline pipeline){
         OpenCvCamera phoneCam;
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         if (livePreview) {
@@ -34,7 +35,7 @@ public class CameraDaemon {
         else {
             phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK);
         }
-        phoneCam.setPipeline(new NativePipeline());
+        phoneCam.setPipeline(pipeline);
         phoneCam.setViewportRenderer(OpenCvCamera.ViewportRenderer.GPU_ACCELERATED);
         return phoneCam;
     }
